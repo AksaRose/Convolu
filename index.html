@@ -1,69 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNN Convolution Learning Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(217.2 32.6% 17.5%)",
+                        input: "hsl(217.2 32.6% 17.5%)",
+                        ring: "hsl(212.7 26.8% 83.9%)",
+                        background: "hsl(222.2 84% 4.9%)",
+                        foreground: "hsl(210 40% 98%)",
+                        primary: {
+                            DEFAULT: "hsl(210 40% 98%)",
+                            foreground: "hsl(222.2 47.4% 11.2%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(210 40% 98%)",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(0 62.8% 30.6%)",
+                            foreground: "hsl(210 40% 98%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(215 20.2% 65.1%)",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(217.2 32.6% 17.5%)",
+                            foreground: "hsl(210 40% 98%)",
+                        },
+                        card: {
+                            DEFAULT: "hsl(222.2 84% 4.9%)",
+                            foreground: "hsl(210 40% 98%)",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "0.5rem",
+                        md: "calc(0.5rem - 2px)",
+                        sm: "calc(0.5rem - 4px)",
+                    },
+                },
+            },
+        }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Convolutional Neural Network Learning Tool</h1>
-            <p>Modify the kernel values to see how convolution affects the output</p>
+<body class="bg-background text-foreground min-h-screen">
+    <div class="container mx-auto max-w-7xl px-4 py-8">
+        <header class="text-center mb-8 pb-6 border-b border-border">
+            <h1 class="text-4xl font-bold mb-2 text-primary">Convolutional Neural Network</h1>
+            <p class="text-muted-foreground text-lg">Modify the kernel values to see how convolution affects the output</p>
         </header>
 
-        <div class="main-content">
-            <div class="section">
-                <h2>Input Image (25×25)</h2>
-                <p class="subtitle">Grayscale values (0-1) - Hover to see values</p>
-                <div class="digit-selector">
-                    <label for="shape-select">Select Shape:</label>
-                    <select id="shape-select">
-                        <option value="circle" selected>Circle</option>
-                        <option value="square">Square</option>
-                        <option value="triangle">Triangle</option>
-                        <option value="diamond">Diamond</option>
-                        <option value="cross">Cross</option>
-                        <option value="star">Star</option>
-                    </select>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Input Image Section -->
+            <div class="bg-card border border-border rounded-lg p-6 shadow-lg">
+                <div class="mb-4">
+                    <h2 class="text-2xl font-semibold mb-1 text-primary">Input Image (25×25)</h2>
+                    <p class="text-sm text-muted-foreground">Grayscale values (0-1) - Hover to see values</p>
                 </div>
-                <div class="grid-container">
+                <div class="flex justify-center mb-4">
                     <div id="input-grid" class="grid grid-25x25"></div>
                 </div>
-                <div class="controls">
-                    <button id="random-input">Randomize Input</button>
-                    <button id="reset-input">Reset Input</button>
+                <div class="flex gap-2 justify-center">
+                    <button id="random-input" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Randomize Input</button>
+                    <button id="reset-input" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">Reset Input</button>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>Kernel (3×3)</h2>
-                <p class="subtitle">Edit values to see changes</p>
-                <div class="grid-container">
+            <!-- Kernel Section -->
+            <div class="bg-card border border-border rounded-lg p-6 shadow-lg">
+                <div class="mb-4">
+                    <h2 class="text-2xl font-semibold mb-1 text-primary">Kernel (3×3)</h2>
+                    <p class="text-sm text-muted-foreground">Edit values to see changes</p>
+                </div>
+                <div class="flex justify-center mb-4">
                     <div id="kernel-grid" class="grid grid-3x3"></div>
                 </div>
-                <div class="controls">
-                    <button id="random-kernel">Randomize Kernel</button>
-                    <button id="reset-kernel">Reset Kernel</button>
+                <div class="flex gap-2 justify-center">
+                    <button id="random-kernel" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Randomize Kernel</button>
+                    <button id="reset-kernel" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">Reset Kernel</button>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>Convolution Output (23×23)</h2>
-                <p class="subtitle">Result of convolution operation</p>
-                <div class="grid-container">
+            <!-- Output Section -->
+            <div class="bg-card border border-border rounded-lg p-6 shadow-lg">
+                <div class="mb-4">
+                    <h2 class="text-2xl font-semibold mb-1 text-primary">Convolution Output (23×23)</h2>
+                    <p class="text-sm text-muted-foreground">Result of convolution operation</p>
+                </div>
+                <div class="flex justify-center mb-4">
                     <div id="output-grid" class="grid grid-23x23"></div>
                 </div>
-                <div class="info">
-                    <p><strong>Output Value Range:</strong> <span id="output-range">-</span></p>
+                <div class="bg-muted/50 rounded-md p-3 text-center">
+                    <p class="text-sm text-foreground"><strong>Output Value Range:</strong> <span id="output-range" class="text-primary">-</span></p>
                 </div>
             </div>
         </div>
 
-        <div class="info-panel">
-            <h3>How it works:</h3>
-            <ul>
+        <!-- Shape Selector - Centered below kernel -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-card border border-border rounded-lg p-6 shadow-lg w-full max-w-md">
+                <div class="space-y-3">
+                    <label for="shape-select" class="text-sm font-medium text-foreground block text-center">Select Shape</label>
+                    <div class="relative">
+                        <select id="shape-select" class="flex h-11 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer hover:border-ring/80">
+                            <option value="circle" selected>Circle</option>
+                            <option value="square">Square</option>
+                            <option value="triangle">Triangle</option>
+                            <option value="diamond">Diamond</option>
+                            <option value="cross">Cross</option>
+                            <option value="star">Star</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <svg class="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-card border border-border rounded-lg p-6 shadow-lg">
+            <h3 class="text-xl font-semibold mb-4 text-primary">How it works:</h3>
+            <ul class="space-y-2 text-muted-foreground list-disc list-inside">
                 <li>The kernel slides over the input image</li>
                 <li>At each position, element-wise multiplication is performed</li>
                 <li>The results are summed to produce the output pixel</li>

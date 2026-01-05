@@ -247,17 +247,21 @@ function updateKernelGrid() {
         const value = kernelGrid[row][col];
         cell.textContent = value.toFixed(2);
         
-        // Color coding: positive (green), negative (red), zero (yellow)
+        // Color coding for dark theme: positive (cyan), negative (red), zero (gray)
         if (value > 0) {
             const intensity = Math.min(255, Math.round(value * 200));
-            cell.style.backgroundColor = `rgb(${255 - intensity}, 255, ${255 - intensity})`;
+            // Cyan tint for positive values
+            cell.style.backgroundColor = `rgb(${Math.max(0, 100 - intensity)}, ${Math.max(0, 200 - intensity)}, 255)`;
+            cell.style.color = 'hsl(210 40% 98%)';
         } else if (value < 0) {
             const intensity = Math.min(255, Math.round(Math.abs(value) * 200));
-            cell.style.backgroundColor = `rgb(255, ${255 - intensity}, ${255 - intensity})`;
+            // Red tint for negative values
+            cell.style.backgroundColor = `rgb(255, ${Math.max(0, 100 - intensity)}, ${Math.max(0, 100 - intensity)})`;
+            cell.style.color = 'hsl(210 40% 98%)';
         } else {
-            cell.style.backgroundColor = '#fff3cd';
+            cell.style.backgroundColor = 'hsl(217.2 32.6% 17.5%)';
+            cell.style.color = 'hsl(215 20.2% 65.1%)';
         }
-        cell.style.color = Math.abs(value) > 0.3 ? 'black' : '#666';
     });
 }
 
