@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Convolution Learning Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Convolutional Neural Network Learning Tool</h1>
+            <p>Modify the kernel values to see how convolution affects the output</p>
+        </header>
+
+        <div class="main-content">
+            <div class="section">
+                <h2>Input Image (25×25)</h2>
+                <p class="subtitle">Grayscale values (0-1) - Hover to see values</p>
+                <div class="digit-selector">
+                    <label for="shape-select">Select Shape:</label>
+                    <select id="shape-select">
+                        <option value="circle" selected>Circle</option>
+                        <option value="square">Square</option>
+                        <option value="triangle">Triangle</option>
+                        <option value="diamond">Diamond</option>
+                        <option value="cross">Cross</option>
+                        <option value="star">Star</option>
+                    </select>
+                </div>
+                <div class="grid-container">
+                    <div id="input-grid" class="grid grid-25x25"></div>
+                </div>
+                <div class="controls">
+                    <button id="random-input">Randomize Input</button>
+                    <button id="reset-input">Reset Input</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Kernel (3×3)</h2>
+                <p class="subtitle">Edit values to see changes</p>
+                <div class="grid-container">
+                    <div id="kernel-grid" class="grid grid-3x3"></div>
+                </div>
+                <div class="controls">
+                    <button id="random-kernel">Randomize Kernel</button>
+                    <button id="reset-kernel">Reset Kernel</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Convolution Output (23×23)</h2>
+                <p class="subtitle">Result of convolution operation</p>
+                <div class="grid-container">
+                    <div id="output-grid" class="grid grid-23x23"></div>
+                </div>
+                <div class="info">
+                    <p><strong>Output Value Range:</strong> <span id="output-range">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>How it works:</h3>
+            <ul>
+                <li>The kernel slides over the input image</li>
+                <li>At each position, element-wise multiplication is performed</li>
+                <li>The results are summed to produce the output pixel</li>
+                <li>Output size: (25-3+1) × (25-3+1) = 23×23</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
