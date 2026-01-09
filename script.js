@@ -98,25 +98,48 @@ function generateShapePattern(shapeType) {
             }
         }
     } else if (shapeType === 'star') {
-        const outerRadius = 8;
-        const innerRadius = 3;
+        const outerRadius = 9;
+        const innerRadius = 3.8;
         const points = 5;
+        
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
-                const dx = i - center;
-                const dy = j - center;
-                const angle = Math.atan2(dy, dx);
+                const dx = j - center;
+                const dy = i - center;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                const normalizedAngle = (angle + Math.PI) / (2 * Math.PI / points);
-                const pointIndex = Math.floor(normalizedAngle);
-                const localAngle = (normalizedAngle - pointIndex) * (2 * Math.PI / points);
-                const radius = pointIndex % 2 === 0 ? outerRadius : innerRadius;
-                const nextRadius = pointIndex % 2 === 0 ? innerRadius : outerRadius;
-                const currentRadius = radius + (nextRadius - radius) * (localAngle / (2 * Math.PI / points));
-                if (dist < currentRadius - 0.5) {
-                    pattern[i][j] = 1;
-                } else if (dist < currentRadius + 0.5) {
-                    pattern[i][j] = Math.max(0, 1 - (dist - currentRadius + 0.5));
+                
+                if (dist > outerRadius + 1) {
+                    continue;
+                }
+                
+                // Calculate angle, starting from top (0 = top, increasing clockwise)
+                let angle = Math.atan2(dx, -dy); // -dy because y increases downward
+                if (angle < 0) angle += 2 * Math.PI;
+                
+                // For 5-pointed star: we have 10 vertices (5 outer, 5 inner)
+                // Each vertex is 36 degrees apart (360/10 = 36)
+                const segmentAngle = (2 * Math.PI) / (points * 2); // π/5 = 36°
+                const segment = Math.floor(angle / segmentAngle);
+                const localAngle = (angle % segmentAngle) / segmentAngle; // 0 to 1
+                
+                // Determine radius at this angle
+                const isOuter = segment % 2 === 0;
+                const r1 = isOuter ? outerRadius : innerRadius;
+                const r2 = isOuter ? innerRadius : outerRadius;
+                
+                // Linear interpolation between r1 and r2
+                const targetRadius = r1 + (r2 - r1) * localAngle;
+                
+                // Check if point is inside
+                const diff = Math.abs(dist - targetRadius);
+                if (dist < targetRadius) {
+                    if (diff < 0.5) {
+                        pattern[i][j] = 1;
+                    } else {
+                        pattern[i][j] = Math.max(0.3, 1 - diff);
+                    }
+                } else if (diff < 0.5) {
+                    pattern[i][j] = Math.max(0, 1 - diff * 2);
                 }
             }
         }

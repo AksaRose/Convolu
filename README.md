@@ -38,3 +38,4 @@ An interactive web-based tool to learn and visualize how convolutional neural ne
 - Responsive design that works on desktop and mobile
 - Real-time computation of convolution operation
 
+
